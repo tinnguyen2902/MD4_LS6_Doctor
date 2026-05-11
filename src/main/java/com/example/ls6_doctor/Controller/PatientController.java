@@ -1,5 +1,6 @@
 package com.example.ls6_doctor.Controller;
 
+import com.example.ls6_doctor.Model.DTO.PatientResponse;
 import com.example.ls6_doctor.Model.Entity.Patient;
 import com.example.ls6_doctor.Service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,13 @@ public class PatientController {
             return ResponseEntity.ok("Xóa thành công bệnh nhân có ID: " + id);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy bệnh nhân có ID: " + id);
+    }
+    @GetMapping("/search")
+    public ResponseEntity<PatientResponse> searchPatients(
+            @RequestParam(defaultValue = "") String patientName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        return ResponseEntity.ok(patientService.searchPatients(patientName, page, size));
     }
 }
