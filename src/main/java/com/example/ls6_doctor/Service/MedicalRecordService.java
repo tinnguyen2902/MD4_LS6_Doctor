@@ -2,11 +2,12 @@ package com.example.ls6_doctor.Service;
 
 import com.example.ls6_doctor.Model.DTO.MedicalRecorRequest;
 import com.example.ls6_doctor.Model.Entity.MedialRecord;
-import com.example.ls6_doctor.Repository.DoctorRepository;
-import com.example.ls6_doctor.Repository.MedicalRecordRepository;
-import com.example.ls6_doctor.Repository.PatientRepository;
+import com.example.ls6_doctor.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MedicalRecordService {
@@ -37,5 +38,19 @@ public class MedicalRecordService {
 
         medicalRecordRepository.save(record);
         return "Tạo hồ sơ bệnh án thành công!";
+    }
+    // LS6
+
+    public List<MedialRecord> getLatestPatients() {
+        // Sử dụng PageRequest để giới hạn 10 bản ghi cho JPQL
+        return medicalRecordRepository.findTop10LatestProcessing(PageRequest.of(0, 10));
+    }
+
+    public List<DoctorStats> getTopDoctors() {
+        return medicalRecordRepository.getTop10Doctors();
+    }
+
+    public List<PatientStats> getTopFrequentPatients() {
+        return medicalRecordRepository.getTop10FrequentPatients();
     }
 }
